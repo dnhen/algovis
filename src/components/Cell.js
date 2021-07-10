@@ -1,6 +1,6 @@
-const Cell = ( {style, cellId} ) => {
+const Cell = ( {style, cellid, onClick, special} ) => {
   return (
-    <div className="cell" style={style} cellId={cellId} />
+    <div className={`cell ${special}`} style={style} id={cellid} onClick={() => onClick({cellid})} />
   );
 }
 

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Cell from './Cell';
 
 const CELL_SIZE = 30; // The size of each cell SIZE x SIZE (has to be > 10)
@@ -13,14 +14,40 @@ const cellStyle = {
 }
 
 const Grid = () => {
+  const [grid, setGrid] = useState([]);
+  const [startCell, setStartCell] = useState('0-0');
+  const [endCell, setEndCell] = useState(`${rows-1}-${cols-1}`)
+
   // Init grid
-  const grid = [];
   for(let row = 0; row < rows; row++){
     let currRow = [];
     for(let col = 0; col < cols; col++){
-      currRow.push(<Cell key={col} style={cellStyle} cellId={`${col}-${row}`} />);
+      currRow.push([]);
     }
     grid.push(currRow);
+  }
+
+  // Function to make cells (this adds the start and end classes if they are applicable)
+  const createCell = (key, cellid) => {
+    let special = "";
+
+    if(cellid === startCell){
+      special = "start";
+    } else if(cellid === endCell){
+      special = "end";
+    }
+    
+    return (<Cell
+          key={key}
+          style={cellStyle}
+          cellid={cellid}
+          onClick={handleClick}
+          special={special} />);
+  }
+
+  // Function to handle when we click on cells
+  const handleClick = (id) => {
+    console.log(id);
   }
 
   return (
@@ -29,7 +56,7 @@ const Grid = () => {
         return (
           <div className="row" key={rowId}>
             {row.map((cell, cellId) => {
-              return cell;
+              return createCell(`${rowId}-${cellId}`, `${rowId}-${cellId}`);
             })}
           </div>
         );

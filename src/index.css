@@ -42,6 +42,21 @@ NAVBAR/HEADER STYLES
   margin-right: 12px;
 }
 
+.navOption {
+  height: 100%;
+  padding: 0 10px;
+  line-height: 40px;
+  margin-left: 10px;
+}
+
+.navOption:hover {
+  background-color: #142363;
+}
+
+.active {
+  background-color: #101C4F;
+}
+
 /* -------------------
 GRID STYLES
 ------------------- */
