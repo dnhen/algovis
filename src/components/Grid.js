@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Cell from './Cell';
 
 const CELL_SIZE = 30; // The size of each cell SIZE x SIZE (has to be > 10)
@@ -15,39 +15,51 @@ const cellStyle = {
 
 const Grid = () => {
   const [grid, setGrid] = useState([]);
-  const [startCell, setStartCell] = useState('0-0');
-  const [endCell, setEndCell] = useState(`${rows-1}-${cols-1}`)
+  const [startCell, setStartCell] = useState([0,0]);
+  const [endCell, setEndCell] = useState([rows-1, cols-1]);
 
-  // Init grid
-  for(let row = 0; row < rows; row++){
-    let currRow = [];
-    for(let col = 0; col < cols; col++){
-      currRow.push([]);
+  useEffect(() => {
+    initGrid();
+  }, []);
+
+  const initGrid = () => {
+    const grid = [];
+
+    // Init grid
+    for(let row = 0; row < rows; row++){
+      let currRow = [];
+      for(let col = 0; col < cols; col++){
+        currRow.push(createCell(row, col, false));
+      }
+      grid.push(currRow);
     }
-    grid.push(currRow);
+    setGrid(grid);
   }
 
-  // Function to make cells (this adds the start and end classes if they are applicable)
-  const createCell = (key, cellid) => {
+  // Function to make cells (this adds the start, visited, and end classes if they are applicable)
+  const createCell = (row, col, visited) => {
     let special = "";
 
-    if(cellid === startCell){
+    if(row === startCell[0] && col == startCell[1]){
       special = "start";
-    } else if(cellid === endCell){
+    } else if(row === endCell[0] && col == endCell[1]){
       special = "end";
+    } else if(visited) {
+      special = "visited";
     }
     
     return (<Cell
-          key={key}
+          key={col}
           style={cellStyle}
-          cellid={cellid}
+          row={row}
+          col={col}
           onClick={handleClick}
           special={special} />);
   }
 
   // Function to handle when we click on cells
-  const handleClick = (id) => {
-    console.log(id);
+  const handleClick = (row, col) => {
+    console.log(row + ' - ' + col);
   }
 
   return (
@@ -56,7 +68,7 @@ const Grid = () => {
         return (
           <div className="row" key={rowId}>
             {row.map((cell, cellId) => {
-              return createCell(`${rowId}-${cellId}`, `${rowId}-${cellId}`);
+              return cell;
             })}
           </div>
         );

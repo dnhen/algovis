@@ -8,7 +8,7 @@ const Header = (props) => {
         <p className="header-text">ALGOVIS</p>
         <p className="navOption">Place Starting Node</p>
         <p className="navOption">Place Ending Node</p>
-        <p className="navOption">Place Starting Node</p>
+        <p className="navOption">Visualise!</p>
       </div>
     </header>
   );

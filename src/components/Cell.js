@@ -1,6 +1,6 @@
-const Cell = ( {style, cellid, onClick, special} ) => {
+const Cell = ( {style, row, col, onClick, special} ) => {
   return (
-    <div className={`cell ${special}`} style={style} id={cellid} onClick={() => onClick({cellid})} />
+    <div className={`cell ${special}`} style={style} row={row} col={col} onClick={() => onClick(row, col)} />
   );
 }
 
