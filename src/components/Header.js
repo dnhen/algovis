@@ -6,7 +6,7 @@ const Header = (props) => {
       <div className="header-container">
         <img src={logo} className="logo" alt="Logo" />
         <p className="header-text">ALGOVIS</p>
-        <p className="navOption">Place Starting Node</p>
+        <p className="navOption" onClick={() => (console.log("place start node clicked"))}>Place Starting Node</p>
         <p className="navOption">Place Ending Node</p>
         <p className="navOption">Visualise!</p>
       </div>
