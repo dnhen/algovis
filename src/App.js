@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Header from './components/Header';
-import { updateGrid } from './Helpers';
+import { updateGrid, handleClick, handleNavClick } from './Helpers';
 
 const CELL_SIZE = 30;
 const ROWS = Math.floor((window.innerHeight * 0.8) / CELL_SIZE);
@@ -18,14 +18,14 @@ function App() {
 
   return (
     <div className="app">
-      <Header />
+      <Header onClick={handleNavClick} />
       {/* Display the grid */}
       <div className="grid">
         {grid.map((row, rowId) => {
           return (
             <div key={rowId} className="row">
               {row.map((cell, cellId) => {
-                return <div key={cellId} className={cell.startCell ? 'cell start' : cell.endCell ? 'cell end' : 'cell'} />
+                return <div key={cellId} className={cell.startCell ? 'cell start' : cell.endCell ? 'cell end' : 'cell'} onClick={() => handleClick(rowId, cellId, setStartCell, setEndCell)} />
               })}
             </div>
           );
