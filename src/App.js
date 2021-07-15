@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Grid from './components/Grid';
 import Cell from './components/Cell';
@@ -15,6 +15,10 @@ const cellStyle = {
   height: `${CELL_SIZE}px`,
   width: `${CELL_SIZE}px`
 }
+
+// Initialise both toggles to be false -> will change when header option clicked
+let newStartNodeActive = false;
+let newEndNodeActive = false;
 
 function App() {
   // Initialise the grid, and start and end cell values
@@ -65,16 +69,44 @@ function App() {
 
   // Function to handle when we click on cells
   const handleClick = (row, col, grid) => {
-    // Copy the grid -> make new cell in clicked pos -> set the grid
+    // Copy the grid
     let newGrid = grid.slice();
-    newGrid[row][col] = createCell(row, col, true);
+
+    if(newStartNodeActive){
+      newGrid[row][col] = createCell(row, col, true)
+      // Update active class and bool
+      document.getElementById("placeStartButton").classList.remove("active");
+      newStartNodeActive = false;
+    } else if(newEndNodeActive){
+      // Update active class and bool
+      document.getElementById("placeEndButton").classList.remove("active");
+      newEndNodeActive = false;
+    } else {
+      // Make new cell in clicked pos -> set the grid
+      newGrid[row][col] = createCell(row, col, true);
+    }
+
     setGrid(newGrid);
+  }
+
+  const activateNewStartNode = () => {
+    if(!newStartNodeActive && !newEndNodeActive){
+      document.getElementById("placeStartButton").classList.add("active");
+      newStartNodeActive = true;
+    }
+  }
+
+  const activateNewEndNode = () => {
+    if(!newStartNodeActive && !newEndNodeActive){
+      document.getElementById("placeEndButton").classList.add("active");
+      newEndNodeActive = true;
+    }
   }
 
   return (
     <div className="app">
       <GridContext.Provider value={grid}>
-        <Header />
+        <Header startNodeFunc={activateNewStartNode} endNodeFunc={activateNewEndNode} />
         <Grid />
       </GridContext.Provider>
     </div>
