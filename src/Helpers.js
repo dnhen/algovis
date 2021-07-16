@@ -1,8 +1,10 @@
 let placeStartCell = false;
 let placeEndCell = false;
+let placeWalls = false;
 
-let placeStartButtonId = "placeStartButton";
-let placeEndButtonId = "placeEndButton";
+const placeStartButtonId = "placeStartButton";
+const placeEndButtonId = "placeEndButton";
+const placeWallsButtonId = "placeWallsButton";
 
 // Updates the grid, rendering each cell and setting the start and end nodes their correct colours
 //
@@ -23,12 +25,13 @@ export function updateGrid(rows, cols, start, end){
         row: {row},
         col: {col},
         startCell: row === start[0] && col === start[1],
-        endCell: row === end[0] && col === end[1]
+        endCell: row === end[0] && col === end[1],
+        wall: false
       });
     }
     newGrid.push(newRow);
   }
-
+  
   return newGrid;
 }
 
@@ -49,22 +52,30 @@ export function handleClick(row, col, setStartCell, setEndCell){
     setEndCell([row, col]);
     placeEndCell = false;
     document.getElementById(placeEndButtonId).classList.remove("active");
-   } else {
-    console.log("clicked empty");
+   } else if(placeWalls){ // If placeWalls is active, place walls where the user clicks
+    console.log("New wall at " + row + "," + col);
    }
 }
 
 // Gets called every time the user clicks on an option in the navbar
 //
+// @param buttonId        Str: the ID of the button that was pressed
+//
 // @return null
 export function handleNavClick(buttonId){
-  if(!placeStartCell && !placeEndCell){
+  if(!placeStartCell && !placeEndCell && !placeWalls){ // None of the menu buttons are toggled on
     // Set clicked button to be active
     document.getElementById(buttonId).classList.add("active");
+
     if(buttonId === placeStartButtonId){ // User clicked place start node button
       placeStartCell = true;
     } else if(buttonId === placeEndButtonId){ // User clicked place end node button
       placeEndCell = true;
+    } else if(buttonId === placeWallsButtonId){
+      placeWalls = true;
     }
+  } else if(buttonId === placeWallsButtonId && placeWalls){ // Place walls is toggled on (and button was clicked again) -> toggle it off
+    placeWalls = false;
+    document.getElementById(buttonId).classList.remove("active");
   }
 }

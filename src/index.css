@@ -17,7 +17,6 @@ NAVBAR/HEADER STYLES
   width: calc(100% - 24px);
   background: rgb(30,51,141);
   background: linear-gradient(90deg, rgba(30,51,141,1) 0%, rgba(84,100,169,1) 100%);
-  max-height: 40px;
 }
 
 .header-container {
@@ -95,4 +94,8 @@ CELL STYLES
 
 .visited {
   background-color: purple;
+}
+
+.wall {
+  background-color: black;
 }

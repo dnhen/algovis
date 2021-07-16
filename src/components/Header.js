@@ -8,6 +8,7 @@ const Header = ( { onClick } ) => {
         <p className="header-text">ALGOVIS</p>
         <p className="navOption" id="placeStartButton" onClick={() => onClick("placeStartButton")}>Place Starting Node</p>
         <p className="navOption" id="placeEndButton" onClick={() => onClick("placeEndButton")}>Place Ending Node</p>
+        <p className="navOption" id="placeWallsButton" onClick={() => onClick("placeWallsButton")}>Place Walls</p>
         <p className="navOption">Visualise!</p>
       </div>
     </header>
