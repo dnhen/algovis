@@ -1,10 +1,12 @@
 let placeStartCell = false;
 let placeEndCell = false;
 let placeWalls = false;
+let visualising = false;
 
 const placeStartButtonId = "placeStartButton";
 const placeEndButtonId = "placeEndButton";
 const placeWallsButtonId = "placeWallsButton";
+const visualiseButtonId = "visualiseButton";
 
 // Updates the grid, rendering each cell and setting the start and end nodes their correct colours
 //
@@ -27,7 +29,8 @@ export function updateGrid(rows, cols, start, end, walls){
         col: {col},
         startCell: row === start[0] && col === start[1],
         endCell: row === end[0] && col === end[1],
-        wall: walls.some((val, valId) => val[0] === row && val[1] === col) // Loop through the walls array and set true value if the row and col is in the walls array, then check if true was found
+        wall: walls.some((val, valId) => val[0] === row && val[1] === col), // Loop through the walls array and set true value if the row and col is in the walls array, then check if true was found
+        visited: false
       });
     }
     newGrid.push(newRow);
@@ -58,7 +61,6 @@ export function handleClick(row, col, setStartCell, setEndCell, {walls, setWalls
     if(!walls.some((val, valId) => val[0] === row && val[1] === col)){ // Not in array -> add to walls
       setWalls(walls.concat([[row, col]]));
     }
-    console.log(walls);
    }
 }
 
@@ -67,8 +69,8 @@ export function handleClick(row, col, setStartCell, setEndCell, {walls, setWalls
 // @param buttonId        Str: the ID of the button that was pressed
 //
 // @return null
-export function handleNavClick(buttonId){
-  if(!placeStartCell && !placeEndCell && !placeWalls){ // None of the menu buttons are toggled on
+export function handleNavClick(buttonId, grid){
+  if(!placeStartCell && !placeEndCell && !placeWalls && !visualising){ // None of the menu buttons are toggled on
     // Set clicked button to be active
     document.getElementById(buttonId).classList.add("active");
 
@@ -78,9 +80,20 @@ export function handleNavClick(buttonId){
       placeEndCell = true;
     } else if(buttonId === placeWallsButtonId){
       placeWalls = true;
+    } else if(buttonId === visualiseButtonId){
+      visualising = true;
+      console.log("visualising");
+      dijstras(grid);
+      console.log("visualising");
     }
   } else if(buttonId === placeWallsButtonId && placeWalls){ // Place walls is toggled on (and button was clicked again) -> toggle it off
     placeWalls = false;
     document.getElementById(buttonId).classList.remove("active");
   }
+}
+
+export function dijstras( { grid, setGrid, startCell, endCell } ){
+  console.log(grid);
+  console.log(startCell);
+  console.log(endCell);
 }
