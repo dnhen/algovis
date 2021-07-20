@@ -48,18 +48,25 @@ export function updateGrid(rows, cols, start, end, walls){
 // @param wallObj         Obj: walls object which contains {walls, setWalls} that is the useState object
 //
 // @return null
-export function handleClick(row, col, setStartCell, setEndCell, {walls, setWalls}){
-  if(placeStartCell){ // If placeStartCell is active, set the new start cell and reset the navbar to be not highlighted
+export function handleClick(row, col, grid, setStartCell, setEndCell, {walls, setWalls}){
+  if(placeStartCell && !grid[row][col].wall){ // If placeStartCell is active, set the new start cell and reset the navbar to be not highlighted
     setStartCell([row, col]);
     placeStartCell = false;
     document.getElementById(placeStartButtonId).classList.remove("active");
-  } else if(placeEndCell){ // If placeEndCell is active, set the new end cell and reset the navbar to be not highlighted
+  } else if(placeEndCell && !grid[row][col].wall){ // If placeEndCell is active, set the new end cell and reset the navbar to be not highlighted
     setEndCell([row, col]);
     placeEndCell = false;
     document.getElementById(placeEndButtonId).classList.remove("active");
    } else if(placeWalls){ // If placeWalls is active, place walls where the user clicks
     if(!walls.some((val, valId) => val[0] === row && val[1] === col)){ // Not in array -> add to walls
-      setWalls(walls.concat([[row, col]]));
+      if(!grid[row][col].startCell && !grid[row][col].endCell){ // We arent placing walls on end and start cell
+        setWalls(walls.concat([[row, col]]));
+      }
+    } else { // Remove the wall the user clicked
+      const index = walls.findIndex((val, valId) => val[0] === row && val[1] === col);
+      let newWalls = walls.slice();
+      newWalls.splice(index, 1);
+      setWalls(newWalls);
     }
    }
 }
@@ -82,9 +89,7 @@ export function handleNavClick(buttonId, grid){
       placeWalls = true;
     } else if(buttonId === visualiseButtonId){
       visualising = true;
-      console.log("visualising");
       dijstras(grid);
-      console.log("visualising");
     }
   } else if(buttonId === placeWallsButtonId && placeWalls){ // Place walls is toggled on (and button was clicked again) -> toggle it off
     placeWalls = false;
@@ -93,7 +98,51 @@ export function handleNavClick(buttonId, grid){
 }
 
 export function dijstras( { grid, setGrid, startCell, endCell } ){
-  console.log(grid);
-  console.log(startCell);
-  console.log(endCell);
+  // Function to get immediate siblings of the cell at row, col
+  function getSiblings(row, col, grid){
+    let output = [];
+    // Get top
+    if(row-1 >= 0 && !grid[row-1][col].visited && !grid[row-1][col].wall){
+      output.push([row-1, col]);
+    }
+    // Get bottom
+    if(row+1 < grid.length && !grid[row+1][col].visited && !grid[row+1][col].wall){
+      output.push([row+1, col]);
+    }
+    // Get left
+    if(col-1 >= 0 && !grid[row][col-1].visited && !grid[row][col-1].wall){
+      output.push([row, col-1]);
+    }
+    // Get right
+    if(col+1 < grid[0].length && !grid[row][col+1].visited && !grid[row][col+1].wall){
+      output.push([row, col+1]);
+    }
+
+    return output;
+  }
+
+  let foundEnd = false;
+  let foundCells = [startCell];
+
+  // Continue looping until we have reached the end node, or there are no more unvisited nodes
+  while(foundCells.length > 0 && !foundEnd){
+    let newGrid = grid.slice(); // Copy the grid (to make edits to)
+    let currCell = foundCells.shift(); // Get the next cell in the foundCells array
+    let siblings = getSiblings(currCell[0], currCell[1], newGrid); // Get the immediate siblings of the cell we are looking at
+    foundCells = foundCells.concat(siblings); // Add the siblings of current cell to foundCells array
+
+    for(let i = 0; i < siblings.length; i++){ // Loop through each sibling -> set to visited
+      if(newGrid[siblings[i][0]][siblings[i][1]].endCell){ // If the cell is the end cell
+        foundEnd = true;
+        break;
+      } else {
+        newGrid[siblings[i][0]][siblings[i][1]].visited = true;
+      }
+    }
+    
+    setGrid(newGrid);
+  }
+
+  document.getElementById(visualiseButtonId).classList.remove("active");
+  visualising = false;
 }
