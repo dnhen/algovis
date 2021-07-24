@@ -26,7 +26,7 @@ function App() {
           return (
             <div key={rowId} className="row">
               {row.map((cell, cellId) => {
-                return <div key={cellId} className={cell.startCell ? 'cell start' : cell.endCell ? 'cell end' : cell.wall ? 'cell wall' : cell.visited ? 'cell visited' : 'cell'} onClick={() => handleClick(rowId, cellId, grid, setStartCell, setEndCell, {walls, setWalls})} />
+                return <div key={cellId} className={cell.startCell ? 'cell start' : cell.endCell ? 'cell end' : cell.wall ? 'cell wall' : cell.highlight ? 'cell highlight' : cell.visited ? 'cell visited' : 'cell'} onClick={() => handleClick(rowId, cellId, grid, setStartCell, setEndCell, {walls, setWalls})} />
               })}
             </div>
           );

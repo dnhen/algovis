@@ -93,9 +93,13 @@ CELL STYLES
 }
 
 .visited {
-  background-color: purple;
+  background-color: #4c5891;
 }
 
 .wall {
-  background-color: black;
+  background-color: rgb(29, 29, 29);
+}
+
+.highlight {
+  background-color: #063233;
 }
