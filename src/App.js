@@ -19,7 +19,7 @@ function App() {
 
   return (
     <div className="app">
-      <Header onClick={handleNavClick} info={{grid: grid, setGrid: setGrid, startCell: startCell, endCell: endCell}} />
+      <Header onClick={handleNavClick} info={{grid: grid, setGrid: setGrid, startCell: startCell, endCell: endCell, setStartCell: setStartCell}} />
       {/* Display the grid */}
       <div className="grid">
         {grid.map((row, rowId) => {

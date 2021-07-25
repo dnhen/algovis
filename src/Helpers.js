@@ -1,4 +1,4 @@
-import { dijstras } from './algorithms/dijstras.js';
+import { dijkstras } from './algorithms/dijkstras.js';
 
 let placeStartCell = false;
 let placeEndCell = false;
@@ -9,6 +9,7 @@ const placeStartButtonId = "placeStartButton";
 const placeEndButtonId = "placeEndButton";
 const placeWallsButtonId = "placeWallsButton";
 const visualiseButtonId = "visualiseButton";
+const resetButtonId = "resetButton";
 
 const displayTimeout = 10;
 
@@ -98,14 +99,28 @@ export function handleNavClick(buttonId, info){
     } else if(buttonId === visualiseButtonId){
       visualising = true;
 
-      const output = dijstras(info);
+      const algoSelected = document.getElementById("algoSelectBox").value;
+      let output = null;
+
+      if(algoSelected === "dijkstras"){
+        output = dijkstras(info);
+      } else { // Error in algorithm selection -> display error.
+        alert("Please select a valid algorithm!");
+        document.getElementById(visualiseButtonId).classList.remove("active");
+        visualising = false;
+        return;
+      }
 
       visualiseAlgorithm(output[0], output[1], info.setGrid);
 
-      setTimeout(() => { // Run after all displaying is complete
+      // Run after all displaying is complete
+      setTimeout(() => {
         document.getElementById(visualiseButtonId).classList.remove("active");
         visualising = false;
-      }, displayTimeout * output[0].length + (displayTimeout * 2) * output[1].length + 1);
+      }, displayTimeout * output[0].length + (displayTimeout * 2) * output[1].length);
+    } else if(buttonId === resetButtonId){ // Reset the grid
+      info.setStartCell(info.startCell.slice());
+      document.getElementById(buttonId).classList.remove("active");
     }
   } else if(buttonId === placeWallsButtonId && placeWalls){ // Place walls is toggled on (and button was clicked again) -> toggle it off
     placeWalls = false;

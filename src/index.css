@@ -56,6 +56,19 @@ NAVBAR/HEADER STYLES
   background-color: #101C4F;
 }
 
+#algoSelectBox{
+  background-color: rgba(255, 0, 0, 0);
+  color: #FDFFFF;
+  border: 0;
+  padding: 0 2px;
+  height: 100%;
+  font-size: 15px;
+}
+
+#algoSelectBox .dropped {
+  background-color:#142363;
+}
+
 /* -------------------
 GRID STYLES
 ------------------- */
@@ -86,20 +99,60 @@ CELL STYLES
 
 .start {
   background-color: green;
+  animation-name: cellAnimate;
+  animation-duration: 0.15s;
 }
 
 .end {
   background-color: red;
+  animation-name: cellAnimate;
+  animation-duration: 0.15s;
 }
 
 .visited {
   background-color: #4c5891;
+  animation-name: cellAnimate;
+  animation-duration: 0.15s;
 }
 
 .wall {
   background-color: rgb(29, 29, 29);
+  animation-name: cellAnimate;
+  animation-duration: 0.15s;
 }
 
 .highlight {
   background-color: #063233;
+  animation-name: pathAnimate;
+  animation-duration: 1s;
+}
+
+@keyframes cellAnimate {
+  0% {
+    transform: scale(0.7);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+
+  }
+}
+
+@keyframes pathAnimate {
+  0% {
+    transform: scale(0.7);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+
+  }
 }
