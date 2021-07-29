@@ -1,4 +1,5 @@
 import { dijkstras } from './algorithms/dijkstras.js';
+import { astar } from './algorithms/astar.js';
 
 let placeStartCell = false;
 let placeEndCell = false;
@@ -104,6 +105,8 @@ export function handleNavClick(buttonId, info){
 
       if(algoSelected === "dijkstras"){
         output = dijkstras(info);
+      } else if(algoSelected === "astar"){
+        output = astar(info);
       } else { // Error in algorithm selection -> display error.
         alert("Please select a valid algorithm!");
         document.getElementById(visualiseButtonId).classList.remove("active");

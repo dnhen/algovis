@@ -5,7 +5,7 @@
 // @param startCell       Arr: the coords of the starting cell
 //
 // @return                Arr: the final array of all grid variations (for visited cells) and final path in format [grids, paths]
-export function dijkstras( { grid, setGrid, startCell } ){
+export function dijkstras( { grid, startCell } ){
   // Function -> Gets the coords [x, y] of each cell in the grid (to track min distance)
   function getAllCells(grid){
     let output = [];
